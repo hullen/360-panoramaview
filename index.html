@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Planetarium Montreal Grand Prix</title>
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+        function initialize() {
+          // Set up Street View and initially set it visible. Register the
+          // custom panorama provider function. Set the StreetView to display
+          // the custom panorama 'reception' which we check for below.
+          var panoOptions = {
+            pano: 'planetarium',
+            visible: true,
+            panoProvider: getCustomPanorama
+          };
+
+          var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('map-canvas'), panoOptions);
+        }
+
+        // Return a pano image given the panoID.
+        function getCustomPanoramaTileUrl() {
+          return 'images/planetarium-montreal-gp.jpg';
+        }
+
+        // Construct the appropriate StreetViewPanoramaData given
+        // the passed pano IDs.
+        function getCustomPanorama(pano, zoom, tileX, tileY) {
+          if (pano == 'planetarium') {
+            return {
+              location: {
+                pano: 'planetarium',
+                description: 'Planetarium Montreal Grand Prix'
+              },
+              links: [],
+              copyright: 'Direitos reservados (c) 2014 Vista Software',
+              tiles: {
+                tileSize: new google.maps.Size(2560, 1280),
+                worldSize: new google.maps.Size(2560, 1280),
+                centerHeading: 110,
+                getTileUrl: getCustomPanoramaTileUrl
+              }
+            };
+          }
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
